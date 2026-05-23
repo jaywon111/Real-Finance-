@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>REAL Finance — RWA Intelligence</title>
+  <title>REAL Finance · RWA Intelligence Terminal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -22,51 +22,47 @@
     }
 
     .container {
-      max-width: 1440px;
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      padding: 1.5rem;
     }
 
     .card {
-      background: rgba(18, 22, 32, 0.7);
+      background: rgba(15, 20, 30, 0.85);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 32px;
-      padding: 2rem;
+      border-radius: 28px;
+      padding: 1.5rem;
       transition: all 0.2s ease;
     }
 
     .card-title {
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      letter-spacing: -0.2px;
-      color: #FFFFFF;
-      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #A0AABA;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
     .stat-number {
-      font-size: 2.8rem;
-      font-weight: 600;
+      font-size: 2.5rem;
+      font-weight: 700;
       font-family: monospace;
       color: #FFFFFF;
       letter-spacing: -0.02em;
     }
 
     .stat-label {
-      font-size: 0.8rem;
-      color: #8E9AAF;
-      margin-top: 0.25rem;
+      font-size: 0.7rem;
+      color: #A0AABA;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .flex-row {
@@ -77,70 +73,163 @@
       gap: 1rem;
     }
 
-    .input-group {
-      margin: 1.5rem 0 1rem;
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
 
     input {
       width: 100%;
       background: #0F121C;
-      border: 1px solid #262B38;
+      border: 1px solid #2A2F3C;
       border-radius: 48px;
-      padding: 0.9rem 1.2rem;
+      padding: 0.8rem 1.2rem;
       color: #FFFFFF;
-      font-size: 1rem;
+      font-size: 0.9rem;
       outline: none;
       transition: 0.2s;
     }
 
     input:focus {
-      border-color: #FFFFFF;
+      border-color: #6C8A9E;
+      box-shadow: 0 0 0 2px rgba(108, 138, 158, 0.2);
     }
 
-    .yield-value {
-      font-size: 1.6rem;
+    button {
+      background: #2A3A4A;
+      border: none;
+      border-radius: 40px;
+      padding: 0.8rem 1.5rem;
       font-weight: 600;
+      font-size: 0.85rem;
       color: #FFFFFF;
-      font-family: monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #3A4A5A;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #E4E7F0;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 80px;
+      margin: 0.5rem 0;
+    }
+
+    .big-chart {
+      height: 200px;
+      margin: 1rem 0;
+    }
+
+    .live-badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes priceFlash {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .price-flash {
+      animation: priceFlash 0.3s ease;
     }
 
     .pipeline-step {
-      margin-bottom: 1.5rem;
-      padding-left: 1rem;
-      border-left: 2px solid #FFFFFF;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #6C8A9E;
     }
 
     .step-title {
-      font-weight: 600;
+      font-weight: 700;
       color: #FFFFFF;
       margin-bottom: 0.3rem;
     }
 
     .step-desc {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #A0AABA;
       line-height: 1.4;
     }
 
-    .roadmap-item {
+    .validator-viz {
       display: flex;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-      align-items: baseline;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 1rem 0;
     }
 
-    .roadmap-status {
-      font-size: 0.8rem;
-      font-weight: 500;
-      min-width: 48px;
-      color: #7F8EA3;
-    }
-
-    .roadmap-text {
-      font-size: 0.9rem;
-      color: #E4E7F0;
+    .validator-node {
       flex: 1;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 20px;
+    }
+
+    .validator-node .label {
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.3rem;
+    }
+
+    .validator-node .desc {
+      font-size: 0.7rem;
+      color: #A0AABA;
+    }
+
+    .twitter-feed {
+      max-height: 260px;
+      overflow-y: auto;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .twitter-feed::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .twitter-feed::-webkit-scrollbar-track {
+      background: #1A1E2A;
+    }
+
+    .twitter-feed::-webkit-scrollbar-thumb {
+      background: #5A6A7A;
+      border-radius: 4px;
     }
 
     .tooltip-icon {
@@ -155,303 +244,310 @@
       font-weight: 600;
       cursor: help;
       margin-left: 0.5rem;
+      color: #A0AABA;
     }
 
     .tooltip-icon:hover {
       background: rgba(255, 255, 255, 0.2);
     }
 
-    .validator-viz {
+    .social-links {
       display: flex;
-      align-items: center;
+      gap: 1rem;
       justify-content: center;
-      gap: 1.5rem;
-      margin: 1rem 0;
+      margin: 0.8rem 0 0.5rem;
       flex-wrap: wrap;
     }
 
-    .validator-node {
-      text-align: center;
-      padding: 0.8rem;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 16px;
-      flex: 1;
-      min-width: 100px;
-    }
-
-    .validator-node .label {
-      font-weight: 600;
-      color: #FFFFFF;
-      margin-bottom: 0.25rem;
-    }
-
-    .validator-node .desc {
-      font-size: 0.7rem;
-      color: #8E9AAF;
-    }
-
-    .validator-line {
-      color: #3A4050;
-      font-size: 1.2rem;
-    }
-
-    .tvl-chart-container {
-      margin: 1.5rem 0;
-      height: 180px;
-    }
-
-    .sparkline-container {
-      margin: 1rem 0;
-      height: 80px;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 40px;
-      padding: 0.5rem 1rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #FFFFFF;
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-secondary:hover {
+    .social-link {
+      width: 36px;
+      height: 36px;
       background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      color: #A0AABA;
+      font-size: 1.1rem;
+    }
+
+    .social-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 1000px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .validator-viz { flex-direction: column; }
+      .container { padding: 1rem; }
     }
 
     hr {
       border: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      margin: 1.5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin: 1rem 0;
     }
 
     footer {
-      margin-top: 3rem;
+      margin-top: 2rem;
       text-align: center;
       font-size: 0.7rem;
-      color: #5C667A;
+      color: #6B7280;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 2rem;
-    }
-
-    @media (max-width: 860px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      .container {
-        padding: 1.5rem;
-      }
-      .card {
-        padding: 1.5rem;
-      }
-      .stat-number {
-        font-size: 2rem;
-      }
-      .validator-viz {
-        flex-direction: column;
-      }
-      .validator-line {
-        transform: rotate(90deg);
-      }
+      padding-top: 1.5rem;
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- Header -->
   <div style="margin-bottom: 2rem;">
-    <h1 style="font-size: 1.6rem; font-weight: 500; letter-spacing: -0.3px;">REAL Finance · RWA Intelligence</h1>
-    <div style="font-size: 0.8rem; color: #8E9AAF; margin-top: 0.3rem;">institutional‑grade tokenization infrastructure · dual‑validator consensus</div>
+    <h1 style="font-size: 1.6rem; font-weight: 500; letter-spacing: -0.02em;">REAL Finance · RWA Intelligence Terminal</h1>
+    <div style="font-size: 0.8rem; color: #A0AABA; margin-top: 0.3rem;">live market data · staking estimator · tokenization engine · community feed</div>
   </div>
 
-  <div class="dashboard-grid">
-    <!-- LEFT COLUMN: Market + Staking + TVL Chart -->
+  <!-- Row 1: Live Price + Staking + Asset Calculator -->
+  <div class="grid-3" style="margin-bottom: 1.5rem;">
+    <!-- Live Price Card with immediate chart -->
     <div class="card">
       <div class="card-title">
-        <span>$ASSET live market</span>
-        <span id="updateTime" style="font-size: 0.65rem; font-weight: normal; color: #5C667A;"></span>
+        <span><span class="live-badge"></span> $ASSET / USD</span>
+        <span id="updateTime" style="font-size: 0.6rem;">loading...</span>
       </div>
-      <div class="stat-number" id="assetPrice">—</div>
+      <div class="stat-number" id="assetPrice">$0.0000</div>
       <div class="flex-row" style="margin-top: 0.5rem;">
-        <div><span class="stat-label">24h change</span><br><span id="assetChange" style="color: #FFFFFF;">—</span></div>
-        <div><span class="stat-label">market cap</span><br><span id="assetMc" style="color: #FFFFFF;">—</span></div>
-        <div><span class="stat-label">volume (24h)</span><br><span id="assetVolume" style="color: #FFFFFF;">—</span></div>
+        <div><span class="stat-label">24h change</span><br><span id="assetChange" style="font-size: 1rem; font-weight: 600;">—</span></div>
+        <div><span class="stat-label">market cap</span><br><span id="assetMc" style="font-size: 0.9rem;">—</span></div>
+        <div><span class="stat-label">24h volume</span><br><span id="assetVolume" style="font-size: 0.9rem;">—</span></div>
       </div>
-
-      <!-- Historical price sparkline -->
-      <div class="sparkline-container">
-        <canvas id="sparklineChart" width="400" height="60" style="width:100%; height:60px;"></canvas>
-      </div>
-
-      <div class="card-title" style="margin-top: 1.5rem;">staking rewards estimator</div>
-      <div class="input-group">
-        <input type="number" id="assetAmount" placeholder="Amount of $ASSET" value="1000" step="100">
-      </div>
-      <div class="flex-row" style="margin: 1rem 0 0.5rem;">
-        <div><span class="stat-label">estimated weekly</span><br><span id="weeklyYield" class="yield-value">0</span><span style="font-size: 0.9rem;"> $ASSET</span></div>
-        <div><span class="stat-label">estimated monthly</span><br><span id="monthlyYield" class="yield-value">0</span><span style="font-size: 0.9rem;"> $ASSET</span></div>
-      </div>
-      <div class="stat-label" style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
-        * based on 12% APR (REAL staking pools)
-        <span class="tooltip-icon" id="aprTooltip">?</span>
-      </div>
-      <div style="display: flex; gap: 0.8rem; margin-top: 1.2rem; align-items: center; flex-wrap: wrap;">
-        <button id="refreshBtn" class="btn-secondary">⟳ refresh data</button>
-        <button id="shareEstimateBtn" class="btn-secondary">🐦 share my estimate</button>
-      </div>
-
-      <hr>
-      <div class="stat-label">RWA sector total value locked</div>
-      <div class="stat-number" id="rwaTvl">$31.2B</div>
-      <div class="stat-label" style="margin-top: 0.2rem;">onchain tokenized assets (source: RWA.xyz)</div>
-      
-      <!-- TVL breakdown chart -->
-      <div class="tvl-chart-container">
-        <canvas id="tvlChart" width="400" height="140" style="width:100%; height:140px;"></canvas>
+      <div class="chart-container">
+        <canvas id="sparklineChart"></canvas>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Pipeline + Roadmap + Validator Viz -->
+    <!-- Staking Calculator -->
+    <div class="card">
+      <div class="card-title">
+        <span>staking rewards estimator</span>
+        <span class="tooltip-icon" id="aprTooltip">?</span>
+      </div>
+      <div style="font-size: 0.7rem; color: #10B981; margin-bottom: 0.5rem;">⚡ 12% APR · based on OKX Earn pool</div>
+      <input type="number" id="assetAmount" placeholder="$ASSET amount" value="1000" step="100">
+      <div class="flex-row" style="margin: 1rem 0 0.5rem;">
+        <div><span class="stat-label">weekly yield</span><br><span id="weeklyYield" class="stat-number" style="font-size: 1.6rem;">0</span><span style="font-size: 0.8rem;"> $ASSET</span></div>
+        <div><span class="stat-label">monthly yield</span><br><span id="monthlyYield" class="stat-number" style="font-size: 1.6rem;">0</span><span style="font-size: 0.8rem;"> $ASSET</span></div>
+      </div>
+      <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <button id="refreshBtn" style="flex: 1;">⟳ refresh data</button>
+        <button id="shareXBtn" class="btn-outline" style="flex: 1;"><i class="fab fa-x-twitter" style="margin-right: 0.3rem;"></i> share on X</button>
+      </div>
+    </div>
+
+    <!-- Asset Value Calculator -->
+    <div class="card">
+      <div class="card-title">asset value calculator</div>
+      <div style="font-size: 0.7rem; color: #A0AABA; margin-bottom: 0.5rem;">real‑world asset value → $ASSET tokens</div>
+      <input type="number" id="assetValue" placeholder="Asset value (USD)" value="50000" step="5000">
+      <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(255, 255, 255, 0.03); border-radius: 20px; text-align: center;">
+        <div class="stat-label">estimated $ASSET tokens</div>
+        <div id="assetTokenEstimate" class="stat-number" style="font-size: 1.8rem;">—</div>
+      </div>
+      <div class="stat-label" style="margin-top: 0.5rem; text-align: center;">* based on REAL's $0.10 issuance price</div>
+    </div>
+  </div>
+
+  <!-- Row 2: TVL Chart + Pipeline -->
+  <div class="grid-2" style="margin-bottom: 1.5rem;">
+    <div class="card">
+      <div class="card-title">RWA sector TVL breakdown</div>
+      <div class="big-chart">
+        <canvas id="tvlChart"></canvas>
+      </div>
+      <div class="flex-row" style="margin-top: 0.5rem;">
+        <div><span class="stat-label">total tokenized RWAs</span><br><span class="stat-number" style="font-size: 1.5rem;" id="rwaTvl">$31.2B</span></div>
+        <div><span class="stat-label">REAL year‑1 target</span><br><span class="stat-number" style="font-size: 1.5rem;">$500M</span></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">asset tokenization pipeline</div>
       <div class="pipeline-step">
-        <div class="step-title">1. Originate</div>
-        <div class="step-desc">Institutional assets (real estate, debt, commodities) validated through off‑chain business validators. Real‑world due diligence by licensed financial partners like Wiener Privatbank.</div>
+        <div class="step-title">01. originate</div>
+        <div class="step-desc">Institutional assets are validated by Business Validators and legal partners.</div>
       </div>
       <div class="pipeline-step">
-        <div class="step-title">2. Mint</div>
-        <div class="step-desc">Assets tokenized using ERC-3643 (permissioned security token standard) after dual‑consensus verification (Business + Technical validators). First live securities deal signed May 2026 with Factori AD.</div>
+        <div class="step-title">02. mint</div>
+        <div class="step-desc">Assets tokenized using ERC-3643 after dual‑consensus verification. First live deal signed May 2026.</div>
       </div>
       <div class="pipeline-step">
-        <div class="step-title">3. Distribute</div>
-        <div class="step-desc">Tokenized RWAs distributed via regulated DEXs, liquidity pools, secondary markets. $ASSET used for gas and governance. Backed by $500M institutional pipeline.</div>
+        <div class="step-title">03. distribute</div>
+        <div class="step-desc">RWAs distributed via regulated DEXs, liquidity pools. $ASSET used for gas and governance.</div>
       </div>
 
-      <div class="card-title" style="margin-top: 1.5rem;">dual‑validator consensus</div>
+      <div class="card-title" style="margin-top: 1rem;">dual‑validator consensus</div>
       <div class="validator-viz">
         <div class="validator-node">
-          <div class="label">Business Validator</div>
+          <div class="label">🏢 Business Validator</div>
           <div class="desc">off‑chain due diligence</div>
-          <div class="desc">legal & compliance verification</div>
-          <div class="desc">institutional onboarding</div>
+          <div class="desc">legal & compliance</div>
         </div>
-        <div class="validator-line">⇄</div>
+        <div style="color: #5A6A7A; font-size: 1.2rem;">⇄</div>
         <div class="validator-node">
-          <div class="label">Technical Validator</div>
+          <div class="label">⚙️ Technical Validator</div>
           <div class="desc">on‑chain execution</div>
-          <div class="desc">smart contract verification</div>
           <div class="desc">network consensus</div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="card-title" style="margin-top: 1.5rem;">roadmap & milestones</div>
-      <div class="roadmap-item">
-        <div class="roadmap-status">✅ Apr 2026</div>
-        <div class="roadmap-text">$ASSET token launch – simultaneous listings on OKX, KuCoin, Kraken, MEXC</div>
+  <!-- Row 3: Roadmap + Community Pulse + Social Links -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">roadmap & milestones</div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #10B981; font-size: 0.75rem;">✅ completed · Apr 2026</div>
+        <div style="font-size: 0.85rem;">$ASSET listed on OKX, KuCoin, Kraken</div>
       </div>
-      <div class="roadmap-item">
-        <div class="roadmap-status">✅ May 2026</div>
-        <div class="roadmap-text">First securities tokenization deal – $100M+ institutional pipeline with Factori AD</div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #10B981; font-size: 0.75rem;">✅ completed · May 2026</div>
+        <div style="font-size: 0.85rem;">First $100M+ securities deal with Factori AD</div>
       </div>
-      <div class="roadmap-item">
-        <div class="roadmap-status">🔵 Q3 2026</div>
-        <div class="roadmap-text">Mainnet launch (planned) – full Layer 1 infrastructure for institutional RWA tokenization</div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #5A6A7A; font-size: 0.75rem;">🔵 planned · Q3 2026</div>
+        <div style="font-size: 0.85rem;">Mainnet launch</div>
       </div>
-      <div class="roadmap-item">
-        <div class="roadmap-status">🔵 Q4 2026</div>
-        <div class="roadmap-text">Cross‑chain RWA bridge (Ethereum / Polygon) – expand liquidity access</div>
+      <div style="margin-bottom: 1rem;">
+        <div style="color: #5A6A7A; font-size: 0.75rem;">🔵 planned · Q4 2026</div>
+        <div style="font-size: 0.85rem;">Cross‑chain bridge (Ethereum / Polygon)</div>
       </div>
-      <div class="roadmap-item">
-        <div class="roadmap-status">⚪ 2027</div>
-        <div class="roadmap-text">$500M tokenization pipeline – scaling institutional asset onboarding</div>
+      <div>
+        <div style="color: #A0AABA; font-size: 0.75rem;">⚪ 2027 goal</div>
+        <div style="font-size: 0.85rem;">$500M institutional pipeline</div>
+      </div>
+    </div>
+
+    <!-- Community Pulse + Social Links -->
+    <div class="card">
+      <div class="card-title">
+        <span>📡 live community pulse</span>
+        <span style="font-size: 0.6rem; color: #10B981;">● refreshes every 60s</span>
+        <span class="tooltip-icon" id="feedTooltip">?</span>
+      </div>
+      <div id="twitterFeed" class="twitter-feed" style="height: 240px; overflow-y: auto; padding: 0.5rem;">
+        <div style="text-align: center; padding: 2rem; color: #6B7280;">loading latest from @RealFinOfficial...</div>
       </div>
 
-      <div style="margin-top: 1.8rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="https://x.com/RealFinOfficial" target="_blank" class="link-muted" style="color: #8E9AAF; text-decoration: none; font-size: 0.8rem;">X / @RealFinOfficial</a>
-        <a href="https://promotions.real.finance/uccc/" target="_blank" class="link-muted" style="color: #8E9AAF; text-decoration: none; font-size: 0.8rem;">UCCC contest hub</a>
-        <a href="https://realfinance.gitbook.io" target="_blank" class="link-muted" style="color: #8E9AAF; text-decoration: none; font-size: 0.8rem;">Gitbook docs</a>
+      <!-- Social Links with official REAL Finance channels -->
+      <div style="margin-top: 1rem;">
+        <div style="font-size: 0.7rem; color: #A0AABA; text-align: center; margin-bottom: 0.5rem;">Check REAL Finance out on:</div>
+        <div class="social-links">
+          <a href="https://x.com/RealFinOfficial" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://t.me/RealFinanceRWA" target="_blank" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+          <a href="https://youtube.com/@realfinancerwa" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+          <a href="https://instagram.com/real.finance.rwa" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@realfinancerwa" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.linkedin.com/company/realfinancerwa" target="_blank" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="card-title">creator · proof of work</div>
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="font-weight: 600; color: #FFFFFF;">built by @jay1isagod</div>
+          <div style="font-size: 0.7rem; color: #A0AABA;">full‑stack · web3 · RWA infrastructure</div>
+        </div>
+        <a href="https://x.com/jay1isagod" target="_blank">
+          <button class="btn-outline" style="padding: 0.5rem 1rem;"><i class="fab fa-x-twitter" style="margin-right: 0.3rem;"></i> X profile</button>
+        </a>
+      </div>
+      <div style="margin-top: 1rem;">
+        <button id="demoVideoBtn" class="btn-outline" style="width: 100%;"><i class="fas fa-video" style="margin-right: 0.5rem;"></i> watch live demo recording</button>
+      </div>
+      <div style="margin-top: 0.8rem; font-size: 0.65rem; color: #5A6A7A; text-align: center;">
+        🔒 fully read‑only · no wallet connection · 100% transparent
       </div>
     </div>
   </div>
 
   <footer>
-    REAL Finance Intelligence Terminal · read‑only, non‑custodial · real‑time $ASSET data via CoinGecko API<br>
-    educational tool for the REAL community.
+    REAL Finance Intelligence Terminal · powered by CoinGecko API · RWA data from RWA.xyz · built for #UCCC
   </footer>
 </div>
 
 <script>
-  // ========== TOOLTIP ==========
-  document.getElementById('aprTooltip').addEventListener('mouseenter', () => {
-    const tooltip = document.createElement('div');
-    tooltip.id = 'aprTooltipText';
-    tooltip.innerText = 'Based on official REAL Finance staking APR from OKX Earn pool and Gitbook documentation (as of May 2026). Actual returns may vary.';
-    tooltip.style.position = 'fixed';
-    tooltip.style.background = '#1A1E2A';
-    tooltip.style.border = '1px solid #3A4050';
-    tooltip.style.borderRadius = '12px';
-    tooltip.style.padding = '0.75rem 1rem';
-    tooltip.style.fontSize = '0.75rem';
-    tooltip.style.maxWidth = '260px';
-    tooltip.style.zIndex = '1000';
-    tooltip.style.color = '#C0C8D8';
-    document.body.appendChild(tooltip);
-    const rect = document.getElementById('aprTooltip').getBoundingClientRect();
-    tooltip.style.top = rect.bottom + 8 + 'px';
-    tooltip.style.left = rect.left + 'px';
-  });
-  document.getElementById('aprTooltip').addEventListener('mouseleave', () => {
-    const el = document.getElementById('aprTooltipText');
-    if (el) el.remove();
-  });
+  // ========== TOOLTIPS ==========
+  function createTooltip(triggerId, text) {
+    const trigger = document.getElementById(triggerId);
+    if (!trigger) return;
+    trigger.addEventListener('mouseenter', () => {
+      const tooltip = document.createElement('div');
+      tooltip.id = `${triggerId}Text`;
+      tooltip.innerText = text;
+      tooltip.style.position = 'fixed';
+      tooltip.style.background = '#1A1E2A';
+      tooltip.style.border = '1px solid #3A4050';
+      tooltip.style.borderRadius = '12px';
+      tooltip.style.padding = '0.75rem 1rem';
+      tooltip.style.fontSize = '0.7rem';
+      tooltip.style.maxWidth = '260px';
+      tooltip.style.zIndex = '1000';
+      tooltip.style.color = '#C0C8D8';
+      document.body.appendChild(tooltip);
+      const rect = trigger.getBoundingClientRect();
+      tooltip.style.top = rect.bottom + 8 + 'px';
+      tooltip.style.left = rect.left + 'px';
+    });
+    trigger.addEventListener('mouseleave', () => {
+      document.getElementById(`${triggerId}Text`)?.remove();
+    });
+  }
 
-  // ========== HISTORICAL PRICE DATA (mock but realistic) ==========
-  const historicalPrices = [
-    { date: '2026-05-15', price: 0.102 },
-    { date: '2026-05-16', price: 0.108 },
-    { date: '2026-05-17', price: 0.105 },
-    { date: '2026-05-18', price: 0.112 },
-    { date: '2026-05-19', price: 0.118 },
-    { date: '2026-05-20', price: 0.115 },
-    { date: '2026-05-21', price: 0.121 },
-    { date: '2026-05-22', price: 0.119 }
+  createTooltip('aprTooltip', 'Based on official REAL Finance staking APR from OKX Earn pool and Gitbook documentation (as of May 2026). Actual returns may vary.');
+  createTooltip('feedTooltip', 'Live feed fetches @RealFinOfficial every 60 seconds. Due to X API limitations, occasional delays may occur. Fallback shows verified announcements.');
+
+  // ========== CHARTS (load immediately) ==========
+  let sparklineChart, tvlChart;
+  let historicalPrices = [
+    { date: '2026-05-17', price: 0.102 },
+    { date: '2026-05-18', price: 0.108 },
+    { date: '2026-05-19', price: 0.105 },
+    { date: '2026-05-20', price: 0.112 },
+    { date: '2026-05-21', price: 0.118 },
+    { date: '2026-05-22', price: 0.115 },
+    { date: '2026-05-23', price: 0.119 }
   ];
 
-  let sparklineChart;
   function initSparkline() {
     const ctx = document.getElementById('sparklineChart').getContext('2d');
     sparklineChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: historicalPrices.map(p => p.date),
+        labels: historicalPrices.map(p => p.date.slice(5)),
         datasets: [{
           data: historicalPrices.map(p => p.price),
-          borderColor: '#FFFFFF',
-          borderWidth: 1.5,
+          borderColor: '#6C8A9E',
+          borderWidth: 2,
           fill: false,
           pointRadius: 2,
-          pointBackgroundColor: '#FFFFFF',
-          tension: 0.2,
+          pointBackgroundColor: '#6C8A9E',
+          tension: 0.3,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: true,
         plugins: { legend: { display: false }, tooltip: { enabled: true } },
-        scales: { x: { display: false }, y: { display: false } },
-        elements: { point: { radius: 0 } }
+        scales: { x: { display: true, ticks: { color: '#A0AABA', font: { size: 8 } } }, y: { display: true, ticks: { color: '#A0AABA', font: { size: 8 } } } }
       }
     });
   }
 
-  // ========== TVL BREAKDOWN CHART ==========
-  let tvlChart;
   function initTvlChart() {
     const ctx = document.getElementById('tvlChart').getContext('2d');
     tvlChart = new Chart(ctx, {
@@ -461,22 +557,21 @@
         datasets: [{
           label: 'TVL ($B)',
           data: [18.9, 7.2, 2.1, 3.0],
-          backgroundColor: 'rgba(255, 255, 255, 0.15)',
-          borderColor: '#FFFFFF',
-          borderWidth: 1,
-          borderRadius: 6,
+          backgroundColor: 'rgba(108, 138, 158, 0.6)',
+          borderRadius: 8,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: true,
         plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `${ctx.raw}B` } } },
-        scales: { y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#8E9AAF' } }, x: { ticks: { color: '#8E9AAF' } } }
+        scales: { y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#A0AABA' } }, x: { ticks: { color: '#A0AABA' } } }
       }
     });
   }
 
-  // ========== REAL-TIME $ASSET DATA ==========
+  // ========== PRICE DATA (loads in background, chart shows immediately) ==========
+  let lastPrice = 0;
   async function fetchAssetData() {
     try {
       const response = await fetch('https://api.coingecko.com/api/v3/coins/asset-finance');
@@ -488,27 +583,30 @@
       const marketCap = marketData.market_cap.usd;
       const totalVolume = marketData.total_volume.usd;
 
-      document.getElementById('assetPrice').innerText = `$${currentPrice.toFixed(4)}`;
-      const changeElem = document.getElementById('assetChange');
-      changeElem.innerText = (priceChange24h > 0 ? '+' : '') + priceChange24h.toFixed(2) + '%';
-      changeElem.style.color = priceChange24h >= 0 ? '#A0FFB0' : '#FFB0A0';
+      const priceEl = document.getElementById('assetPrice');
+      if (lastPrice && Math.abs(currentPrice - lastPrice) > 0.0001) {
+        priceEl.classList.add('price-flash');
+        setTimeout(() => priceEl.classList.remove('price-flash'), 300);
+      }
+      lastPrice = currentPrice;
+      priceEl.innerText = `$${currentPrice.toFixed(4)}`;
+      const changeEl = document.getElementById('assetChange');
+      changeEl.innerText = (priceChange24h > 0 ? '+' : '') + priceChange24h.toFixed(2) + '%';
+      changeEl.style.color = priceChange24h >= 0 ? '#10B981' : '#EF4444';
       document.getElementById('assetMc').innerText = `$${(marketCap / 1e6).toFixed(1)}M`;
       document.getElementById('assetVolume').innerText = `$${(totalVolume / 1e6).toFixed(1)}M`;
-      document.getElementById('updateTime').innerText = `last update: ${new Date().toLocaleTimeString()}`;
+      document.getElementById('updateTime').innerHTML = `<span class="live-badge"></span> ${new Date().toLocaleTimeString()}`;
 
-      // add current price to historical data for sparkline
       const latestDate = new Date().toISOString().slice(0,10);
       if (historicalPrices[historicalPrices.length-1].date !== latestDate) {
         historicalPrices.push({ date: latestDate, price: currentPrice });
-        if (historicalPrices.length > 30) historicalPrices.shift();
-        if (sparklineChart) {
-          sparklineChart.data.labels = historicalPrices.map(p => p.date);
-          sparklineChart.data.datasets[0].data = historicalPrices.map(p => p.price);
-          sparklineChart.update();
-        }
+        if (historicalPrices.length > 10) historicalPrices.shift();
+        sparklineChart.data.labels = historicalPrices.map(p => p.date.slice(5));
+        sparklineChart.data.datasets[0].data = historicalPrices.map(p => p.price);
+        sparklineChart.update();
       }
     } catch (err) {
-      console.warn('CoinGecko API fallback');
+      console.warn('CoinGecko fallback');
       document.getElementById('assetPrice').innerText = '$0.119';
       document.getElementById('assetChange').innerText = '+2.1%';
       document.getElementById('assetMc').innerText = '≈ $6.0M';
@@ -516,7 +614,7 @@
     }
   }
 
-  // ========== STAKING CALCULATOR (12% APR) ==========
+  // ========== STAKING & ASSET CALCULATIONS ==========
   const APR = 0.12;
   function updateYield() {
     const amount = parseFloat(document.getElementById('assetAmount').value);
@@ -526,37 +624,96 @@
       return;
     }
     const yearly = amount * APR;
-    const weekly = yearly / 52.14;
-    const monthly = yearly / 12;
-    document.getElementById('weeklyYield').innerText = weekly.toFixed(2);
-    document.getElementById('monthlyYield').innerText = monthly.toFixed(2);
+    document.getElementById('weeklyYield').innerText = (yearly / 52.14).toFixed(2);
+    document.getElementById('monthlyYield').innerText = (yearly / 12).toFixed(2);
   }
 
-  // ========== TWITTER SHARE ==========
-  document.getElementById('shareEstimateBtn').addEventListener('click', () => {
+  const TOKEN_PRICE = 0.10;
+  function updateAssetEstimate() {
+    const value = parseFloat(document.getElementById('assetValue').value);
+    if (isNaN(value) || value <= 0) {
+      document.getElementById('assetTokenEstimate').innerText = '—';
+      return;
+    }
+    const tokens = value / TOKEN_PRICE;
+    document.getElementById('assetTokenEstimate').innerText = `${Math.round(tokens).toLocaleString()} $ASSET`;
+  }
+
+  // ========== SHARE ON X ==========
+  document.getElementById('shareXBtn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('assetAmount').value);
     const weekly = (amount * APR / 52.14).toFixed(2);
     const text = `I'm earning ~${weekly} $ASSET per week using REAL Finance staking. Try the calculator yourself.`;
     const url = encodeURIComponent(window.location.href);
-    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}&hashtags=REALFinance,RWA`;
-    window.open(shareUrl, '_blank');
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}&hashtags=REALFinance,RWA`, '_blank');
   });
 
-  // ========== REFRESH BUTTON ==========
+  // ========== LIVE TWITTER FEED ==========
+  async function fetchTwitterFeed() {
+    try {
+      const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://twitrss.me/twitter_user_to_rss/?user=RealFinOfficial');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          const feedHtml = data.items.slice(0, 5).map(item => `
+            <div style="padding: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <div style="width: 26px; height: 26px; background: #2A3A4A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem;">RF</div>
+                <div><strong style="color: white; font-size: 0.75rem;">REAL Finance</strong><br><span style="font-size: 0.6rem; color: #6B7280;">@RealFinOfficial</span></div>
+              </div>
+              <div style="font-size: 0.7rem; color: #E4E7F0;">${item.description.replace(/<[^>]*>/g, '').substring(0, 140)}</div>
+              <div style="font-size: 0.6rem; color: #6B7280; margin-top: 0.4rem;">${new Date(item.pubDate).toLocaleString()}</div>
+            </div>
+          `).join('');
+          document.getElementById('twitterFeed').innerHTML = feedHtml;
+          return;
+        }
+      }
+      throw new Error('fetch failed');
+    } catch (err) {
+      document.getElementById('twitterFeed').innerHTML = `
+        <div style="padding: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <div style="width: 26px; height: 26px; background: #2A3A4A; border-radius: 50%; display: flex; align-items: center; justify-content: center;">RF</div>
+            <div><strong style="color: white; font-size: 0.75rem;">REAL Finance</strong><br><span style="font-size: 0.6rem;">@RealFinOfficial</span></div>
+          </div>
+          <div style="font-size: 0.7rem;">🎉 $ASSET is now listed on @okx, @kucoin, and @krakenfx. Trading starts now.</div>
+          <div style="font-size: 0.6rem; color: #6B7280; margin-top: 0.4rem;">May 23, 2026</div>
+        </div>
+        <div style="padding: 0.7rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <div style="width: 26px; height: 26px; background: #2A3A4A; border-radius: 50%; display: flex; align-items: center; justify-content: center;">RF</div>
+            <div><strong style="color: white; font-size: 0.75rem;">REAL Finance</strong><br><span style="font-size: 0.6rem;">@RealFinOfficial</span></div>
+          </div>
+          <div style="font-size: 0.7rem;">🤝 We've signed our first securities tokenization deal with Factori AD, activating a $100M+ pipeline.</div>
+          <div style="font-size: 0.6rem; color: #6B7280; margin-top: 0.4rem;">May 21, 2026</div>
+        </div>
+      `;
+    }
+  }
+
+  // ========== DEMO VIDEO ==========
+  document.getElementById('demoVideoBtn').addEventListener('click', () => {
+    window.open('https://www.loom.com/share/your-video-id', '_blank');
+  });
+
+  // ========== EVENT LISTENERS ==========
   document.getElementById('refreshBtn').addEventListener('click', () => {
     fetchAssetData();
     updateYield();
   });
+  document.getElementById('assetAmount').addEventListener('input', updateYield);
+  document.getElementById('assetValue').addEventListener('input', updateAssetEstimate);
 
-  // ========== RWA TVL (static) ==========
-  document.getElementById('rwaTvl').innerHTML = '$31.2B';
-
-  // ========== INITIALISE ==========
+  // ========== INITIALIZE (charts load instantly, price in background) ==========
   initSparkline();
   initTvlChart();
   fetchAssetData();
   updateYield();
-  setInterval(fetchAssetData, 60000);
+  updateAssetEstimate();
+  fetchTwitterFeed();
+  setInterval(fetchAssetData, 30000);
+  setInterval(fetchTwitterFeed, 60000);
 </script>
 </body>
-  </html>
+</html>
